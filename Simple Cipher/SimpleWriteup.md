@@ -8,7 +8,8 @@ The challenge provides us with the source code with some parts redacted, mainly 
 The main vulnerability stems from the fact that the server doesn't have a limit to how much requests a client can send, combined that with the fact the encryption uses XOR which is reversible, it leaves an oppurtunity for the attacker to figure out the scramble pattern and reverse the functionality of encrypt() and decrypt().
 
 <br><h1>The Exploit:</h1></br> 
-<h6>We start with reversing the functionality of encrypt():</h6>
+<h3>We start with reversing the functionality of encrypt():</h3>
+
 The main functionality of encrypt() comes from pad(), xor(), substitution. pad() is straightforward just like xor()
 encrypt() does substitution() then xor(), we give the 48 bit binary key as all zeros to make the xor() redundant and thus receiving the subsituted text as the ciphertext.
 since by principle xor() doesn't happen, we can deduce the substitution by sending a 48 bit plaintext each varying by containing a '1' at any one of the 0-47 indices possible. We then note the index of the '1' in ciphertext and append that to a list to successfully recreate 'Pattern'
